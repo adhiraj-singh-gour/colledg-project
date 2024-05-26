@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load custom_tag %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+
+{% block content %}
+
+
+        <div class="row">
+            <br>
+            {% if order is not None %}
+            <h1 class="display-3">Showing Model</h1>
+            {% endif %}
+            <br>
+            <div class="col mx-auto">
+                <div class="card ml-auto" style="width: 18rem;">
+                    <img src="{{course.thumbnail.url}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">{{course.name}}</h5>
+                      <p class="card-text m-0 p-0">{{course.description}}
+                        <br>
+                        Save{{course.discount}}%
+                        <p style="font-size:20px">
+                            <del>{{course.price |rupee }}</del>
+                            &nbsp;
+                            <span>{% cal_sellprice  course.price course.discount as value %}{{value|rupee}}</span>
+                        </p>
+                        </p>
+                    </div>
+                    <div class='card-footer p-0 border-0'>
+                        <div class='row no-gutters'>
+                            <div class='col border-right-1'><a href="/check-out/{{course.slug}}" class='btn btn-light btn-block'>Enroll Now</a></div>
+                            <div class='col border-left-1'><a href="/course/{{course.slug}}" class='btn btn-light btn-block'>Show More</a></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+          <div class='col'>
+            <div>
+                <p class='display-4'>{{course.name}}</p>
+                <hr>
+                <p class='display-5'>Payable Amount :<b>{% cal_sellprice  course.price course.discount as value %}{{value|rupee}}</b>
+                </p>
+                {% comment %} <a  class = "btn btn-light border" href="{% url "payment" %}">continue to pay</a> {% endcomment %}
+                <form action="{% url "payment" %}" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="amount" value="{% cal_sellprice  course.price course.discount as value %}{{value}}">
+                    <button type="submit">proceed</button>
+                </form>
+            </div>
+          </div>
+            
+
+             
+
+        </div>
+
+{% endblock %}

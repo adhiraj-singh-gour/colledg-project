@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load custom_tag %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    {% block content %}
+    
+    <div class="container-fluid">
+          <div class="row">
+                {% for i in obj %}
+                <div class="col mx-auto">
+                    <div class="card mx-auto" style="width: 18rem;">
+                        <img src="{{i.thumbnail.url}}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                          <h5 class="card-title">{{i.name}}</h5>
+                          <p class="card-text m-0 p-0">{{i.description}}
+                            <br>
+                            Save{{i.discount}}%
+                            <p style="font-size:20px">
+                                <del>{{i.price |rupee }}</del>
+                                &nbsp;
+                                <span>{% cal_sellprice  i.price i.discount as value %}{{value|rupee}}</span>
+                            </p>
+                            </p>
+                        </div>
+                        <div class='card-footer p-0 border-0'>
+                            <div class='row no-gutters'>
+                                <div class='col border-right-1'><a href="/check-out/{{i.slug}}" class='btn btn-light btn-block'>Enroll Now</a></div>
+                                <div class='col border-left-1'><a href="/course/{{i.slug}}" class='btn btn-light btn-block'>Show More</a></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                {% endfor%} 
+                
+
+          </div>          
+                         
+    </div>
+
+    {% endblock %}
+
+
+</body>
+</html>
